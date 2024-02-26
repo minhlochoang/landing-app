@@ -6,11 +6,15 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 import Header from "./components/Header";
 
 function App() {
   return (
-    <Router>
+    <>
+      <Router>
       <Header></Header>
       <Routes>
         <Route path="/" element={<Home/>}></Route>
@@ -20,7 +24,20 @@ function App() {
         <Route path="/sign-up" element={<SignUp/>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
       </Routes>
-    </Router>
+      </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
+      <ToastContainer />
+    </>
   );
 }
 

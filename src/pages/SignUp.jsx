@@ -1,8 +1,14 @@
 import React from 'react'
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
+import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { db } from '../firebase'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+
+import { AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,12 +18,40 @@ export default function SignUp() {
       password: "",
     });
   const { name, email, password } = formData;
+  const navigate = useNavigate()
 
   function onChange(e) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value
     }))
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault()
+
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      updateProfile(auth.currentUser,{
+        displayName: name
+      })
+      const user = userCredential.user
+      const formDataCopy = {...formData}
+      delete formDataCopy.password
+      formDataCopy.timestamp = serverTimestamp()
+
+      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+      navigate('/')
+      toast.success('Sign up was successfully')
+    } catch (error) {
+      toast.error('something wrong...')
+    }
   }
 
   return (
@@ -32,7 +66,7 @@ export default function SignUp() {
               />
           </div>
           <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-              <form action="">
+              <form action="" onSubmit={onSubmit}>
               <input
                       type="name"
                       id="name"
@@ -72,7 +106,7 @@ export default function SignUp() {
                     <p className="mb-6">
                       Have a account?
                       <Link
-                        to="/sign-up"
+                        to="/sign-in"
                         className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
                       >
                         Sign in
