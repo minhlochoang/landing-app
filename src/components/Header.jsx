@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default function Header() {
   const [pageState, setPageState] = useState("Sign in");
   const location = useLocation();
   const navigate = useNavigate();
-//   const auth = getAuth();
-//   useEffect(() => {
-//     onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         setPageState("Profile");
-//       } else {
-//         setPageState("Sign in");
-//       }
-//     });
-//   }, [auth]);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageState("Profile");
+      } else {
+        setPageState("Sign in");
+      }
+    });
+  }, [auth]);
+
   function pathMatchRoute(route) {
+    console.log(route)
+    console.log(location.pathname)
     if (route === location.pathname) {
       return true;
     }
@@ -54,7 +58,7 @@ export default function Header() {
                 (pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
                 "text-black border-b-red-500"
               }`}
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/profile")}
             >
               {pageState}
             </li>
