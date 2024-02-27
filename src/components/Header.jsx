@@ -18,8 +18,6 @@ export default function Header() {
   }, [auth]);
 
   function pathMatchRoute(route) {
-    console.log(route)
-    console.log(location.pathname)
     if (route === location.pathname) {
       return true;
     }
