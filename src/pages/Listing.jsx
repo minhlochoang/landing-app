@@ -22,8 +22,8 @@ import {
   FaParking,
   FaChair,
 } from "react-icons/fa";
-// import Contact from "../components/Contact";
-// import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import Contact from "../components/Contact";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 export default function Listing() {
   const auth = getAuth();
@@ -87,7 +87,7 @@ export default function Listing() {
         </p>
       )}
 
-      {/* <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
+      <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
         <div className=" w-full ">
           <p className="text-2xl font-bold mb-3 text-blue-900">
             {listing.name} - ${" "}
@@ -154,7 +154,7 @@ export default function Listing() {
           <MapContainer
             center={[listing.geolocation.lat, listing.geolocation.lng]}
             zoom={13}
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
@@ -170,7 +170,7 @@ export default function Listing() {
             </Marker>
           </MapContainer>
         </div>
-      </div> */}
+      </div>
     </main>
   );
 }
